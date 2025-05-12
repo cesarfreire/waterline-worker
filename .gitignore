@@ -1,0 +1,8 @@
+*.pem
+*.key
+*.crt
+!.sample
+.venv
+.idea
+*.env
+!sample.env

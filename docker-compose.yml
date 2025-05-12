@@ -1,0 +1,36 @@
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo_db
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  worker-sensores:
+    build: .
+    container_name: mqtt_worker
+    depends_on:
+      - mongo
+    env_file:
+      - prod.env
+    environment:
+      - WORKER_MODE=sensors
+      - MONGO_COLLECTION=leituras
+    restart: always
+
+  worker-logs:
+    build: .
+    container_name: mqtt_logs
+    depends_on:
+      - mongo
+    env_file:
+      - prod.env
+    environment:
+      - WORKER_MODE=logs
+      - MONGO_COLLECTION=logs
+    restart: always
+
+volumes:
+  mongo_data:
