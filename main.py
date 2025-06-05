@@ -33,17 +33,20 @@ def on_message(client, userdata, msg):
         # Converter JSON recebido
         data = json.loads(msg.payload.decode())
 
-        if "time" in data:
-            boot_time_ms = data["time"]
-            now_utc = datetime.datetime.now(datetime.timezone.utc)
-            timestamp_utc = now_utc - datetime.timedelta(milliseconds=boot_time_ms)
+        if "timestamp" in data:
+            # boot_time_ms = data["time"]
+            # now_utc = datetime.datetime.now(datetime.timezone.utc)
+            # timestamp_utc = now_utc - datetime.timedelta(milliseconds=boot_time_ms)
 
-            # Converter de UTC para UTC-3
-            timestamp_br = timestamp_utc.astimezone(br_tz)
+            # # Converter de UTC para UTC-3
+            # timestamp_br = timestamp_utc.astimezone(br_tz)
 
-            data["timestamp"] = timestamp_br  # Salva no MongoDB com UTC-3
-            data["timezone"] = "America/Sao_Paulo"
-            del data["time"]  # Remove o campo "time" original
+            # data["timestamp"] = timestamp_br  # Salva no MongoDB com UTC-3
+            # data["timezone"] = "America/Sao_Paulo"
+            # del data["time"]  # Remove o campo "time" original
+            
+            iso_timestamp_str = data["timestamp"]
+            data["timestamp"] = datetime.datetime.fromisoformat(iso_timestamp_str.replace('Z', '+00:00'))
 
         # Inserir no MongoDB
         collection.insert_one(data)
