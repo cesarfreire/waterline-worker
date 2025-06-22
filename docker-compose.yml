@@ -1,12 +1,12 @@
 services:
-  # mongo:
-  #   image: mongo:latest
-  #   container_name: mongo_db
-  #   restart: always
-  #   ports:
-  #     - "27017:27017"
-  #   volumes:
-  #     - mongo_data:/data/db
+  mongo:
+    image: mongo:latest
+    container_name: mongo_db
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
 
   worker-sensores:
     build: .
